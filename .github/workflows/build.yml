@@ -43,11 +43,13 @@ jobs:
       - name: Build Windows installer
         run: npx electron-builder --win nsis --x64 --publish never
 
-      - name: Show release files
-        run: dir release
+      - name: Show build files
+        run: dir dist
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: ERP-EXE
-          path: mapco-erp-execution/release/**
+          path: |
+            mapco-erp-execution/dist/*.exe
+            mapco-erp-execution/dist/win-unpacked/**
