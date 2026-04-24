@@ -44,10 +44,10 @@ jobs:
         run: npx electron-builder --win nsis --x64 --publish never
 
       - name: Show release files
-        run: dir mapco-erp-execution\release
+        run: dir release
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: ERP-EXE
-          path: mapco-erp-execution/release/
+          path: mapco-erp-execution/release/**
