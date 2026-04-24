@@ -7,6 +7,10 @@ jobs:
   build:
     runs-on: windows-latest
 
+    defaults:
+      run:
+        working-directory: mapco-erp-execution
+
     steps:
       - name: تحميل المشروع
         uses: actions/checkout@v4
@@ -14,10 +18,10 @@ jobs:
       - name: تثبيت Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: تثبيت المكتبات
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: بناء البرنامج
         run: npm run dist
@@ -27,5 +31,5 @@ jobs:
         with:
           name: ERP-EXE
           path: |
-            release/*.exe
-            release/win-unpacked/**
+            mapco-erp-execution/release/*.exe
+            mapco-erp-execution/release/win-unpacked/**
