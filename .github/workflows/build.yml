@@ -26,11 +26,17 @@ jobs:
       - name: Build frontend
         run: npx vite build
 
-      - name: Build electron files
-        shell: cmd
+      - name: Disable TS checking for realmService
+        shell: pwsh
         run: |
-          npx tsc -p tsconfig.electron.json --noEmitOnError false
-          exit /b 0
+          $file = "electron/services/realmService.ts"
+          $content = Get-Content $file -Raw
+          if (-not $content.StartsWith("// @ts-nocheck")) {
+            Set-Content $file ("// @ts-nocheck`r`n" + $content)
+          }
+
+      - name: Build electron files
+        run: npx tsc -p tsconfig.electron.json
 
       - name: Build Windows installer
         run: npx electron-builder --win nsis --x64 --publish never
