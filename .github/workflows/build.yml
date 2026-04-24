@@ -26,13 +26,15 @@ jobs:
       - name: Build frontend
         run: npx vite build
 
-      - name: Disable TS checking for realmService
+      - name: Disable TS checking
         shell: pwsh
         run: |
           $file = "electron/services/realmService.ts"
-          $content = Get-Content $file -Raw
-          if (-not $content.StartsWith("// @ts-nocheck")) {
-            Set-Content $file ("// @ts-nocheck`r`n" + $content)
+          if (Test-Path $file) {
+            $content = Get-Content $file -Raw
+            if (-not $content.StartsWith("// @ts-nocheck")) {
+              Set-Content $file ("// @ts-nocheck`r`n" + $content)
+            }
           }
 
       - name: Build electron files
@@ -41,12 +43,11 @@ jobs:
       - name: Build Windows installer
         run: npx electron-builder --win nsis --x64 --publish never
 
+      - name: Show release files
+        run: dir mapco-erp-execution\release
+
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: ERP-EXE
-          path: |
-            mapco-erp-execution/dist/*.exe
-            mapco-erp-execution/dist/win-unpacked/**
-            mapco-erp-execution/release/*.exe
-            mapco-erp-execution/release/win-unpacked/**
+          path: mapco-erp-execution/release/
