@@ -1,0 +1,31 @@
+name: Build ERP EXE
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: تحميل المشروع
+        uses: actions/checkout@v4
+
+      - name: تثبيت Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: تثبيت المكتبات
+        run: npm install
+
+      - name: بناء البرنامج
+        run: npm run dist
+
+      - name: رفع ملف EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: ERP-EXE
+          path: |
+            release/*.exe
+            release/win-unpacked/**
