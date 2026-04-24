@@ -24,7 +24,9 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: بناء البرنامج
-        run: npm run dist
+        run: |
+          npm run build
+          npx electron-builder --win nsis --x64
 
       - name: رفع ملف EXE
         uses: actions/upload-artifact@v4
